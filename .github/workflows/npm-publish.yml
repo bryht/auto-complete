@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-node@v1
       - run: yarn install
       - run: yarn build
-      - run: npm version patch
+      - run: npm version (npx semver (npm info @bryht/auto-complete version) -i)
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
