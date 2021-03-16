@@ -1,6 +1,6 @@
 {
   "name": "@bryht/auto-complete",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "main": "build/index.js",
   "dependencies": {
     "react": "^17.0.1",
@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "start-storybook -p 6006 -s public",
+    "clean": "rm -r build",
     "build": "tsc & babel src --out-dir build --extensions \".ts,.tsx\" --ignore src/*/*.stories.tsx --source-maps inline"
   },
   "eslintConfig": {
