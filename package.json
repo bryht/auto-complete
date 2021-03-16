@@ -1,6 +1,6 @@
 {
   "name": "@bryht/auto-complete",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "main": "build/index.js",
   "dependencies": {
     "react": "^17.0.1",
@@ -20,7 +20,7 @@
   },
   "babel": {
     "presets": [
-      "@babel/preset-env",
+      "@babel/preset-react",
       "@babel/preset-typescript"
     ],
     "plugins": [
