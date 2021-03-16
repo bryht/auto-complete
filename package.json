@@ -3,13 +3,9 @@
   "version": "0.5.3",
   "main": "build/index.js",
   "dependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-scripts": "4.0.3"
   },
   "scripts": {
     "start": "start-storybook -p 6006 -s public",
-    "clean": "rm -r build",
     "build": "tsc & babel src --out-dir build --extensions \".ts,.tsx\" --ignore src/*/*.stories.tsx --source-maps inline"
   },
   "eslintConfig": {
@@ -28,6 +24,8 @@
     ]
   },
   "devDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "@babel/cli": "^7.13.10",
     "@babel/core": "^7.13.10",
     "@babel/preset-typescript": "^7.13.0",
