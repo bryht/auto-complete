@@ -1,6 +1,6 @@
 {
   "name": "@bryht/auto-complete",
-  "version": "0.5.6",
+  "version": "0.5.5",
   "main": "build/index.js",
   "dependencies": {},
   "scripts": {
