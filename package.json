@@ -6,7 +6,7 @@
   "scripts": {
     "start": "start-storybook -p 6006 -s public",
     "build": "tsc & babel src --out-dir build --extensions \".ts,.tsx\" --ignore src/*/*.stories.tsx --source-maps inline",
-    "publish-manual": "npm version patch ; npm publish --access public"
+    "publish-manual": "yarn build; npm version patch ; npm publish --access public"
   },
   "eslintConfig": {
     "extends": [
