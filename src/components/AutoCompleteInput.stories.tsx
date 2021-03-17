@@ -5,14 +5,17 @@ import AutoCompeteInput from './AutoCompeteInput';
 export default {
   title: 'AutoCompeteInput',
   component: AutoCompeteInput,
+  parameters:{
+    layout:'centered',
+  },
   args: {
     id: '',
-    options: ['a','b','cc','ddee'],
+    options: ['aa', 'bb', 'cc', 'aabb', 'bbcc', 'aacc', 'aabbcc'],
     placeholder: 'placeholder',
     inputClassName: '',
-    listClassName:'',
-    onKeyDown: (key: string) => {},
-    onChange: (value: string) => {},
+    listClassName: '',
+    onKeyDown: (key: string) => { if (key === 'Enter') alert(key) },
+    onChange: (value: string) => { console.log(value) },
     value: ''
   },
 } as Meta;

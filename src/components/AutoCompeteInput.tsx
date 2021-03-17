@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, RefObject } from 'react';
 import './AutoCompleteInput.scss';
 
 export interface IProps {
@@ -13,49 +13,93 @@ export interface IProps {
 
 }
 
-class AutoCompeteInput extends Component<IProps, { isShowDropdown: boolean, inputValue: string }> {
+class AutoCompeteInput extends Component<IProps, { isShowDropdown: boolean, inputValue: string, selectedOption: string }> {
 
+    inputRef: RefObject<HTMLInputElement>;
     constructor(props: Readonly<IProps>) {
         super(props);
+        this.inputRef = React.createRef<HTMLInputElement>();
         this.state = {
             isShowDropdown: false,
-            inputValue: ''
+            inputValue: '',
+            selectedOption: '',
         }
     }
 
-
+    filterOptions(value: string) {
+        const { options } = this.props;
+        return options.filter(p => p.indexOf(value) > -1);
+    }
     onValueChanged(value: string) {
         const { onChange } = this.props;
 
-        this.setState({ isShowDropdown: !!value, inputValue: value })
+        this.setState({
+            isShowDropdown: !!value,
+            inputValue: value,
+            selectedOption: this.filterOptions(value)[0]
+        })
 
         onChange(value);
+    }
+
+    onKeyDown(key: string) {
+        const { onKeyDown, onChange } = this.props;
+        const { selectedOption, inputValue } = this.state;
+        const options = this.filterOptions(inputValue);
+        if (key === "ArrowUp") {
+            let index = options.findIndex(p => p === selectedOption);
+            if (index === 0) {
+                this.setState({ selectedOption: options[options.length - 1] });
+            }
+            else if (index > 0) {
+                this.setState({ selectedOption: options[index - 1] });
+            }
+        }
+
+        if (key === "ArrowDown") {
+            let index = options.findIndex(p => p === selectedOption);
+            if (index === options.length - 1) {
+                this.setState({ selectedOption: options[0] });
+            }
+            else if (index > -1) {
+                this.setState({ selectedOption: options[index + 1] });
+            }
+        }
+        if (key === "Tab" || key === "Enter") {
+            if (selectedOption) {
+                this.setState({ isShowDropdown: false, inputValue: selectedOption });
+                onChange(selectedOption);
+            }
+        }
+
+        onKeyDown(key);
     }
 
     render() {
         const {
             id,
-            options,
             placeholder,
             inputClassName,
             listClassName,
-            onKeyDown,
         } = this.props;
         const {
             isShowDropdown,
             inputValue,
+            selectedOption,
         } = this.state;
         return (
             <>
                 <input type="text" id={id || 'auto-complete-input'}
+                    ref={this.inputRef}
                     className={`auto-complete-input-class-name ${inputClassName}`}
                     placeholder={placeholder || ''}
-                    onKeyDown={e => onKeyDown(e.key)}
+                    onKeyDown={e => { this.onKeyDown(e.key); if (e.key === "Tab" || e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault() }}
                     onChange={e => this.onValueChanged(e.currentTarget.value)}
+                    value={inputValue}
                 >
                 </input>
                 <ul className={`auto-complete-list-class-name ${listClassName} ${isShowDropdown && 'show'}`}>
-                    {options.filter(p => p.indexOf(inputValue) > -1).map(option => (<li>{option}</li>))}
+                    {this.filterOptions(inputValue).map(option => <li className={option === selectedOption && 'selected'}>{option}</li>)}
                 </ul>
             </>
         );
