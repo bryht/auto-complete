@@ -21,6 +21,6 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: npm --no-git-tag-version version $(npx semver $(npm info @bryht/auto-complete version) -i)
-      - run: npm publish --access public
+      - uses: JS-DevTools/npm-publish@v1
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
