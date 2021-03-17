@@ -5,21 +5,23 @@ import AutoCompeteInput from './AutoCompeteInput';
 export default {
   title: 'AutoCompeteInput',
   component: AutoCompeteInput,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
   args: {
-    inputValue: '',
-    disabled: false,
-    required: false,
+    id: '',
+    options: ['a','b','cc','ddee'],
+    placeholder: 'placeholder',
+    inputClassName: '',
+    listClassName:'',
+    onKeyDown: (key: string) => {},
+    onChange: (value: string) => {},
+    value: ''
   },
 } as Meta;
 
 const Template: Story = (args: any) => <AutoCompeteInput {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {
-  primary: true,
-  label: 'AutoCompeteInput',
-};
+// Default.args = {
+//   primary: true,
+//   label: 'AutoCompeteInput',
+// };
 
