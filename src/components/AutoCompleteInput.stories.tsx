@@ -5,12 +5,19 @@ import AutoCompeteInput from './AutoCompeteInput';
 export default {
   title: 'AutoCompeteInput',
   component: AutoCompeteInput,
-  parameters:{
-    layout:'centered',
+  parameters: {
+    layout: 'centered',
   },
   args: {
     id: '',
-    options: ['aa', 'bb', 'cc', 'aabb', 'bbcc', 'aacc', 'aabbcc'],
+    options: [
+      'off',
+      'office',
+      'different',
+      'staff',
+      'offers',
+      'offer',
+    ],
     placeholder: 'placeholder',
     inputClassName: '',
     listClassName: '',

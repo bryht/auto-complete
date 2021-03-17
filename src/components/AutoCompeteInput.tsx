@@ -5,6 +5,7 @@ export interface IProps {
     id: string;
     options: Array<string>;
     placeholder: string;
+    className: string;
     inputClassName: string;
     listClassName: string;
     onKeyDown: (key: string) => void;
@@ -79,6 +80,7 @@ class AutoCompeteInput extends Component<IProps, { isShowDropdown: boolean, inpu
         const {
             id,
             placeholder,
+            className,
             inputClassName,
             listClassName,
         } = this.props;
@@ -88,9 +90,10 @@ class AutoCompeteInput extends Component<IProps, { isShowDropdown: boolean, inpu
             selectedOption,
         } = this.state;
         return (
-            <>
+            <div className={className || 'auto-complete'}>
                 <input type="text" id={id || 'auto-complete-input'}
                     ref={this.inputRef}
+                    onBlur={() => this.setState({ isShowDropdown: false })}
                     className={`auto-complete-input-class-name ${inputClassName}`}
                     placeholder={placeholder || ''}
                     onKeyDown={e => { this.onKeyDown(e.key); if (e.key === "Tab" || e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault() }}
@@ -99,9 +102,9 @@ class AutoCompeteInput extends Component<IProps, { isShowDropdown: boolean, inpu
                 >
                 </input>
                 <ul className={`auto-complete-list-class-name ${listClassName} ${isShowDropdown && 'show'}`}>
-                    {this.filterOptions(inputValue).map(option => <li className={option === selectedOption && 'selected'}>{option}</li>)}
+                    {this.filterOptions(inputValue).map(option => <li className={option === selectedOption ? 'selected' : ''}>{option}</li>)}
                 </ul>
-            </>
+            </div>
         );
     }
 }
