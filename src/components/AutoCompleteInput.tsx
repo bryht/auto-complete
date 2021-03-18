@@ -4,17 +4,16 @@ import './AutoCompleteInput.scss';
 export interface IProps {
     id: string;
     options: Array<string>;
-    placeholder: string;
-    className: string;
-    inputClassName: string;
-    listClassName: string;
+    placeholder?: string;
+    className?: string;
+    inputClassName?: string;
+    listClassName?: string;
     onKeyDown: (key: string) => void;
     onChange: (value: string) => void;
-    value: string;
-
+    inputValue: string;
 }
 
-class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, inputValue: string, selectedOption: string }> {
+class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, selectedOption: string }> {
 
     inputRef: RefObject<HTMLInputElement>;
     constructor(props: Readonly<IProps>) {
@@ -22,7 +21,6 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, inp
         this.inputRef = React.createRef<HTMLInputElement>();
         this.state = {
             isShowDropdown: false,
-            inputValue: '',
             selectedOption: '',
         }
     }
@@ -33,19 +31,16 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, inp
     }
     onValueChanged(value: string) {
         const { onChange } = this.props;
-
+        onChange(value);
         this.setState({
             isShowDropdown: !!value,
-            inputValue: value,
             selectedOption: this.filterOptions(value)[0]
-        })
-
-        onChange(value);
+        });
     }
 
     onKeyDown(key: string) {
-        const { onKeyDown, onChange } = this.props;
-        const { selectedOption, inputValue } = this.state;
+        const { onKeyDown, inputValue } = this.props;
+        const { selectedOption } = this.state;
         const options = this.filterOptions(inputValue);
         if (key === "ArrowUp") {
             let index = options.findIndex(p => p === selectedOption);
@@ -68,8 +63,8 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, inp
         }
         if (key === "Tab" || key === "Enter") {
             if (selectedOption) {
-                onChange(selectedOption);
-                this.setState({ isShowDropdown: false, inputValue: selectedOption }, () => onKeyDown(key));
+                this.onValueChanged(selectedOption);
+                this.setState({ isShowDropdown: false }, () => onKeyDown(key));
             }
         } else {
             onKeyDown(key);
@@ -84,10 +79,10 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, inp
             className,
             inputClassName,
             listClassName,
+            inputValue,
         } = this.props;
         const {
             isShowDropdown,
-            inputValue,
             selectedOption,
         } = this.state;
         return (

@@ -8,12 +8,8 @@ test('renders without crashing', async () => {
     id="test"
     options={[]}
     placeholder="test1"
-    className=""
-    inputClassName=""
-    listClassName=""
     onChange={() => { }}
     onKeyDown={() => { }}
-    value=""
   />);
   screen.debug();
   expect(screen.getByPlaceholderText('test1')).toBeInTheDocument();

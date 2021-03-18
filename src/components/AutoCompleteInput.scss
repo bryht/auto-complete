@@ -1,4 +1,3 @@
-
 .auto-complete-list-class-name {
   background-color: wheat;
   display: none;
@@ -7,8 +6,11 @@
   &.show {
     display: block;
   }
-  
-  li.selected {
-    background-color: yellow;
+
+  li {
+    &.selected {
+      background-color: yellow;
+    }
+
   }
 }
