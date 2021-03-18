@@ -34,46 +34,45 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
         onChange(value);
         this.setState({
             isShowDropdown: !!value,
-            selectedOption: this.filterOptions(value)[0]
         });
     }
 
-    blur(){
+    blur() {
         this.inputRef.current?.blur();
     }
 
     onKeyDown(key: string) {
         const { onKeyDown, inputValue } = this.props;
-        const { selectedOption } = this.state;
         const options = this.filterOptions(inputValue);
-        if (key === "ArrowUp") {
-            let index = options.findIndex(p => p === selectedOption);
-            if (index === 0) {
-                this.setState({ selectedOption: options[options.length - 1] });
+        if (options.length > 0) {
+            const { selectedOption } = this.state;
+            let selected = selectedOption;
+            if (key === "ArrowUp") {
+                let index = options.findIndex(p => p === selectedOption);
+                if (index <= 0) {
+                    selected = options[options.length - 1];
+                }
+                else {
+                    selected = options[index - 1];
+                }
+                this.setState({ selectedOption: selected });
+                this.onValueChanged(selected);
             }
-            else if (index > 0) {
-                this.setState({ selectedOption: options[index - 1] });
+
+            if (key === "ArrowDown" || key === "Tab") {
+                let index = options.findIndex(p => p === selectedOption);
+                if (index < options.length - 1) {
+                    selected = options[index + 1];
+                }
+                else {
+                    selected = options[0];
+                }
+                this.setState({ selectedOption: selected });
+                this.onValueChanged(selected);
             }
         }
 
-        if (key === "ArrowDown") {
-            let index = options.findIndex(p => p === selectedOption);
-            if (index === options.length - 1) {
-                this.setState({ selectedOption: options[0] });
-            }
-            else if (index > -1) {
-                this.setState({ selectedOption: options[index + 1] });
-            }
-        }
-        if (key === "Tab" || key === "Enter") {
-            if (selectedOption) {
-                this.onValueChanged(selectedOption);
-                this.setState({ isShowDropdown: false }, () => onKeyDown(key));
-            }
-        } else {
-            onKeyDown(key);
-        }
-
+        onKeyDown(key);
     }
 
     render() {
