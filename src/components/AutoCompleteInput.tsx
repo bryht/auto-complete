@@ -38,6 +38,10 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
         });
     }
 
+    blur(){
+        this.inputRef.current?.blur();
+    }
+
     onKeyDown(key: string) {
         const { onKeyDown, inputValue } = this.props;
         const { selectedOption } = this.state;
