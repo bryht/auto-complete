@@ -1,18 +1,20 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import AutoCompleteInput from './AutoCompleteInput';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<AutoCompleteInput
+test('renders without crashing', async () => {
+  render(<AutoCompleteInput
     id="test"
     options={[]}
-    placeholder=""
+    placeholder="test1"
     className=""
     inputClassName=""
     listClassName=""
     onChange={() => { }}
     onKeyDown={() => { }}
     value=""
-  />, div);
+  />);
+  screen.debug();
+  expect(screen.getByPlaceholderText('test1')).toBeInTheDocument();
 });
