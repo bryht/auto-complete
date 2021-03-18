@@ -26,13 +26,6 @@ export default {
   },
 } as Meta;
 
-// const Template: Story = (args: any) => <AutoCompleteInput {...args} />;
-
-// Default.args = {
-//   primary: true,
-//   label: 'AutoCompleteInput',
-// };
-
 const Template: Story = (args: any) => {
   const [value, setValue] = useState(args.value ?? '');
   return (
@@ -41,7 +34,7 @@ const Template: Story = (args: any) => {
       onChange={(value) => {
         setValue(value);
       }}
-      onKeyDown={(key) => { if (key === 'Enter') { debugger; alert(value) } }}
+      onKeyDown={(key) => { if (key === 'Enter') { alert(value) } }}
       inputValue={value}
     />
   );

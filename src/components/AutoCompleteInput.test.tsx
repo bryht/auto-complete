@@ -8,6 +8,7 @@ test('renders without crashing', async () => {
     id="test"
     options={[]}
     placeholder="test1"
+    inputValue=""
     onChange={() => { }}
     onKeyDown={() => { }}
   />);
