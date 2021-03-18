@@ -14,7 +14,7 @@ export interface IProps {
 
 }
 
-class AutoCompeteInput extends Component<IProps, { isShowDropdown: boolean, inputValue: string, selectedOption: string }> {
+class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, inputValue: string, selectedOption: string }> {
 
     inputRef: RefObject<HTMLInputElement>;
     constructor(props: Readonly<IProps>) {
@@ -110,4 +110,4 @@ class AutoCompeteInput extends Component<IProps, { isShowDropdown: boolean, inpu
     }
 }
 
-export default AutoCompeteInput;
+export default AutoCompleteInput;

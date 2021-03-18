@@ -1,10 +1,10 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
-import AutoCompeteInput from './AutoCompeteInput';
+import AutoCompleteInput from './AutoCompleteInput';
 
 export default {
-  title: 'AutoCompeteInput',
-  component: AutoCompeteInput,
+  title: 'AutoCompleteInput',
+  component: AutoCompleteInput,
   parameters: {
     layout: 'centered',
   },
@@ -27,11 +27,11 @@ export default {
   },
 } as Meta;
 
-const Template: Story = (args: any) => <AutoCompeteInput {...args} />;
+const Template: Story = (args: any) => <AutoCompleteInput {...args} />;
 
 export const Default = Template.bind({});
 // Default.args = {
 //   primary: true,
-//   label: 'AutoCompeteInput',
+//   label: 'AutoCompleteInput',
 // };
 

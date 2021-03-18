@@ -1,2 +1,2 @@
-import AutoCompeteInput from './components/AutoCompeteInput';
-export { AutoCompeteInput };
+import AutoCompleteInput from './components/AutoCompleteInput';
+export { AutoCompleteInput };
