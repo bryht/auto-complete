@@ -31,10 +31,13 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
     }
     onValueChanged(value: string) {
         const { onChange } = this.props;
+        const { selectedOption } = this.state;
         onChange(value);
         this.setState({
             isShowDropdown: !!value,
+            selectedOption: !!value ? selectedOption : ''
         });
+
     }
 
     blur() {
@@ -56,10 +59,9 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
                     selected = options[index - 1];
                 }
                 this.setState({ selectedOption: selected });
-                this.onValueChanged(selected);
             }
 
-            if (key === "ArrowDown" || key === "Tab") {
+            if (key === "ArrowDown") {
                 let index = options.findIndex(p => p === selectedOption);
                 if (index < options.length - 1) {
                     selected = options[index + 1];
@@ -68,7 +70,13 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
                     selected = options[0];
                 }
                 this.setState({ selectedOption: selected });
+            }
+
+            if (key === "Tab") {
                 this.onValueChanged(selected);
+                this.setState({
+                    isShowDropdown: false,
+                });
             }
         }
 
