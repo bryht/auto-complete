@@ -20,7 +20,7 @@ jobs:
           node-version: 14.x
       - run: yarn install
       - run: yarn build
-      - run: npm --no-git-tag-version version $(npx semver $(npm info @bryht/auto-complete version) -i)
+      - run: npm --no-git-tag-version version $(npx semver $(npm info @bryht/auto-complete-input version) -i)
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
