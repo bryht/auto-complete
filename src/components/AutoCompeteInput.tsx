@@ -29,7 +29,7 @@ class AutoCompeteInput extends Component<IProps, { isShowDropdown: boolean, inpu
 
     filterOptions(value: string) {
         const { options } = this.props;
-        return options.filter(p => p.indexOf(value) > -1);
+        return options.filter(p => p.indexOf(value) > -1).sort((a, b) => a.length - b.length);
     }
     onValueChanged(value: string) {
         const { onChange } = this.props;
@@ -68,12 +68,13 @@ class AutoCompeteInput extends Component<IProps, { isShowDropdown: boolean, inpu
         }
         if (key === "Tab" || key === "Enter") {
             if (selectedOption) {
-                this.setState({ isShowDropdown: false, inputValue: selectedOption });
                 onChange(selectedOption);
+                this.setState({ isShowDropdown: false, inputValue: selectedOption }, () => onKeyDown(key));
             }
+        } else {
+            onKeyDown(key);
         }
 
-        onKeyDown(key);
     }
 
     render() {
