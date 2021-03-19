@@ -17,6 +17,7 @@ export default {
       'staff',
       'offers',
       'offer',
+      'on',
     ],
     placeholder: 'placeholder',
     inputClassName: '',
