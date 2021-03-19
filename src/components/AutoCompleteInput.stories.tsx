@@ -31,7 +31,7 @@ const Template: Story = (args: any) => {
   return (
     <AutoCompleteInput
       {...args}
-      onChange={(value) => {
+      onInputValueChanged={(value) => {
         setValue(value);
       }}
       // onKeyDown={(key) => { if (key === 'Enter') { alert(value) } }}

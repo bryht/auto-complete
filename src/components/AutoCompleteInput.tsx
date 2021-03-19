@@ -8,12 +8,12 @@ export interface IProps {
     className?: string;
     inputClassName?: string;
     listClassName?: string;
-    onKeyDown: (key: string) => void;
-    onChange: (value: string) => void;
+    onInputValueChanged: (inputValue: string) => void;
+    onTypedValueChanged: (key: string, typedValue: string) => void;
     inputValue: string;
 }
 
-class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, searchValue: string, selectedOption: string }> {
+class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, typedValue: string, selectedOption: string }> {
 
     inputRef: RefObject<HTMLInputElement>;
     constructor(props: Readonly<IProps>) {
@@ -22,7 +22,7 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sea
         this.state = {
             isShowDropdown: false,
             selectedOption: '',
-            searchValue: this.props.inputValue
+            typedValue: this.props.inputValue
         }
     }
 
@@ -30,25 +30,21 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sea
         const { options } = this.props;
         return options.filter(p => p.indexOf(value) > -1).sort((a, b) => a.length - b.length);
     }
-    onValueChanged(value: string) {
-        const { onChange ,options } = this.props;
-        onChange(value);
+    onInputValueChanged(inputValue: string) {
+        const { onInputValueChanged: onChange, options } = this.props;
+        onChange(inputValue);
         this.setState({
-            isShowDropdown: !!value,
-            selectedOption: options.includes(value) ? value : '',
-            searchValue: value
+            isShowDropdown: !!inputValue,
+            selectedOption: options.includes(inputValue) ? inputValue : '',
+            typedValue: inputValue
         });
 
     }
 
-    blur() {
-        this.inputRef.current?.blur();
-    }
-
-    onKeyDown(key: string) {
-        const { onKeyDown, onChange } = this.props;
-        const { searchValue, selectedOption } = this.state;
-        const options = this.filterOptions(searchValue);
+    onTypedValueChanged(key: string, typedValue: string) {
+        const { onTypedValueChanged, onInputValueChanged } = this.props;
+        const { selectedOption } = this.state;
+        const options = this.filterOptions(typedValue);
         if (options.length > 0) {
             let selected = selectedOption;
             if (key === "ArrowUp") {
@@ -60,7 +56,7 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sea
                     selected = options[index - 1];
                 }
                 this.setState({ selectedOption: selected });
-                onChange(selected);
+                onInputValueChanged(selected);
             }
 
             if (key === "ArrowDown") {
@@ -72,7 +68,7 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sea
                     selected = options[0];
                 }
                 this.setState({ selectedOption: selected });
-                onChange(selected);
+                onInputValueChanged(selected);
             }
 
             if (key === "Tab") {
@@ -80,17 +76,20 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sea
             }
         }
 
-        onKeyDown(key);
+        onTypedValueChanged(key, typedValue);
+    }
+    blur() {
+        this.inputRef.current?.blur();
     }
 
     renderOption(option: string) {
-        const { searchValue } = this.state;
-        if(searchValue && option.includes(searchValue)){
+        const { typedValue } = this.state;
+        if (typedValue && option.includes(typedValue)) {
             return <>
-            <span>{option.split(searchValue)[0]}</span>
-            <span className="typed">{searchValue}</span>
-            <span>{option.split(searchValue)[1]}</span>
-        </>
+                <span>{option.split(typedValue)[0]}</span>
+                <span className="typed">{typedValue}</span>
+                <span>{option.split(typedValue)[1]}</span>
+            </>
         }
     }
 
@@ -106,7 +105,7 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sea
         const {
             isShowDropdown,
             selectedOption,
-            searchValue,
+            typedValue: searchValue,
         } = this.state;
         return (
             <div className={className || 'auto-complete'}>
@@ -115,8 +114,8 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sea
                     onBlur={() => this.setState({ isShowDropdown: false })}
                     className={`auto-complete-input-class-name ${inputClassName}`}
                     placeholder={placeholder || ''}
-                    onKeyDown={e => { this.onKeyDown(e.key); if (e.key === "Tab" || e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault() }}
-                    onChange={e => this.onValueChanged(e.currentTarget.value)}
+                    onKeyDown={e => { this.onTypedValueChanged(e.key, e.currentTarget.value); if (e.key === "Tab" || e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault() }}
+                    onChange={e => this.onInputValueChanged(e.currentTarget.value)}
                     value={inputValue}
                 >
                 </input>
