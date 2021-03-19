@@ -13,7 +13,7 @@ export interface IProps {
     inputValue: string;
 }
 
-class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, selectedOption: string }> {
+class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, searchValue: string, selectedOption: string }> {
 
     inputRef: RefObject<HTMLInputElement>;
     constructor(props: Readonly<IProps>) {
@@ -22,6 +22,7 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
         this.state = {
             isShowDropdown: false,
             selectedOption: '',
+            searchValue: this.props.inputValue
         }
     }
 
@@ -30,12 +31,12 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
         return options.filter(p => p.indexOf(value) > -1).sort((a, b) => a.length - b.length);
     }
     onValueChanged(value: string) {
-        const { onChange } = this.props;
-        const { selectedOption } = this.state;
+        const { onChange ,options } = this.props;
         onChange(value);
         this.setState({
             isShowDropdown: !!value,
-            selectedOption: !!value ? selectedOption : ''
+            selectedOption: options.includes(value) ? value : '',
+            searchValue: value
         });
 
     }
@@ -45,10 +46,10 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
     }
 
     onKeyDown(key: string) {
-        const { onKeyDown, inputValue } = this.props;
-        const options = this.filterOptions(inputValue);
+        const { onKeyDown, onChange } = this.props;
+        const { searchValue, selectedOption } = this.state;
+        const options = this.filterOptions(searchValue);
         if (options.length > 0) {
-            const { selectedOption } = this.state;
             let selected = selectedOption;
             if (key === "ArrowUp") {
                 let index = options.findIndex(p => p === selectedOption);
@@ -59,6 +60,7 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
                     selected = options[index - 1];
                 }
                 this.setState({ selectedOption: selected });
+                onChange(selected);
             }
 
             if (key === "ArrowDown") {
@@ -70,17 +72,26 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
                     selected = options[0];
                 }
                 this.setState({ selectedOption: selected });
+                onChange(selected);
             }
 
             if (key === "Tab") {
-                this.onValueChanged(selected);
-                this.setState({
-                    isShowDropdown: false,
-                });
+                this.setState({ isShowDropdown: false })
             }
         }
 
         onKeyDown(key);
+    }
+
+    renderOption(option: string) {
+        const { searchValue } = this.state;
+        if(searchValue && option.includes(searchValue)){
+            return <>
+            <span>{option.split(searchValue)[0]}</span>
+            <span className="typed">{searchValue}</span>
+            <span>{option.split(searchValue)[1]}</span>
+        </>
+        }
     }
 
     render() {
@@ -95,6 +106,7 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
         const {
             isShowDropdown,
             selectedOption,
+            searchValue,
         } = this.state;
         return (
             <div className={className || 'auto-complete'}>
@@ -109,7 +121,11 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, sel
                 >
                 </input>
                 <ul className={`auto-complete-list-class-name ${listClassName} ${isShowDropdown && 'show'}`}>
-                    {this.filterOptions(inputValue).map(option => <li className={option === selectedOption ? 'selected' : ''}>{option}</li>)}
+                    {this.filterOptions(searchValue).map(option =>
+                        <li className={option === selectedOption ? 'selected' : ''}>
+                            {this.renderOption(option)}
+                        </li>)
+                    }
                 </ul>
             </div>
         );
