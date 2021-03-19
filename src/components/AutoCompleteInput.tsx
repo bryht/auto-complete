@@ -132,7 +132,7 @@ class AutoCompleteInput extends Component<IProps, { isShowDropdown: boolean, typ
                 </input>
                 <ul className={`auto-complete-list-class-name ${listClassName} ${isShowDropdown && 'show'}`}>
                     {this.filterOptions(typedValue).map(option =>
-                        <li className={option === selectedOption ? 'selected' : ''}>
+                        <li key={option} className={option === selectedOption ? 'selected' : ''}>
                             {this.renderOption(option)}
                         </li>)
                     }
