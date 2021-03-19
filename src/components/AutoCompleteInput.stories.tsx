@@ -34,7 +34,7 @@ const Template: Story = (args: any) => {
       onInputValueChanged={(value) => {
         setValue(value);
       }}
-      // onKeyDown={(key) => { if (key === 'Enter') { alert(value) } }}
+      onKeyDown={(key) => { if (key === 'Enter') { alert(value) } }}
       inputValue={value}
     />
   );
